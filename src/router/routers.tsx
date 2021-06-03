@@ -1,16 +1,23 @@
 /*
  * @Author: 鲁田文
  * @Date: 2021-03-31 14:22:13
- * @LastEditTime: 2021-03-31 20:50:38
+ * @LastEditTime: 2021-06-03 11:55:00
  * @LastEditors: 鲁田文
  * @Description:
  */
 import { format } from "path";
 import { lazy } from "react";
+
 import { RoutesOption } from "./index";
+import Layout from "@/components/layout";
 
 const Login = lazy(() => import("@/pages/login"));
 const Home = lazy(() => import("@/pages/home"));
+const Auth = lazy(() => import("@/pages/auth"));
+const Auth1 = lazy(() => import("@/pages/auth/index copy"));
+const Auth2 = lazy(() => import("@/pages/auth/index copy 2"));
+
+const permissions = ['admin'];
 
 const routes: RoutesOption[] = [
   {
@@ -19,31 +26,71 @@ const routes: RoutesOption[] = [
     title: "登录",
   },
   {
-    path: "/home",
-    component: Home,
-    title: "首页",
+    path: "/404",
+    component: () => <div>404</div>,
+    title: "404",
   },
   {
-    path: "/auth",
-    component: Login,
-    title: "权限",
+    path: "/manage",
+    component: Layout,
+    meta: {
+      permissions: [
+        ...permissions
+      ]
+    },
     children: [
       {
-        path: "/activity",
-        component: Login,
-        title: "活动1",
+        path: "/home",
+        component: Home,
+        title: "活动",
+        meta: {
+          permissions: [
+            ...permissions,
+          ]
+        },
       },
       {
-        path: "/activity",
-        component: Login,
-        title: "活动2",
+        path: "/auth",
+        title: "活动主体",
+        meta: {
+          permissions: [
+            ...permissions,
+          ]
+        },
+        children: [
+          {
+            path: "/activity",
+            component: Auth,
+            title: "活动",
+            meta: {
+              permissions: [
+                ...permissions,
+              ]
+            },
+          },
+          {
+            path: "/activity1",
+            component: Auth1,
+            title: "活动1",
+            meta: {
+              permissions: [
+                ...permissions,
+              ]
+            },
+          },
+          {
+            path: "/activity2",
+            component: Auth2,
+            title: "活动2",
+            meta: {
+              permissions: [
+                ...permissions,
+              ]
+            },
+          },
+        ]
       },
     ],
-  },
-  {
-    path: "/activity",
-    component: Login,
-    title: "活动",
   },
 ];
 
