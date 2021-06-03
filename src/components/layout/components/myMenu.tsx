@@ -1,7 +1,7 @@
 /*
  * @Author: 鲁田文
  * @Date: 2021-04-08 14:22:35
- * @LastEditTime: 2021-06-02 16:42:10
+ * @LastEditTime: 2021-06-03 16:56:41
  * @LastEditors: 鲁田文
  * @Description:
  */
@@ -27,7 +27,8 @@ function MyMenu({ collapsed }: MenuProps) {
   const history = useHistory();
 
   // 过滤菜单
-  const newRouters = usePermission({ routers });
+  const menuRouter = routers.find(x => x?.meta?.menu); // layout路由
+  const newRouters = usePermission({ routers: menuRouter?.children || [] }); // 过滤权限后路由
 
   // menu开关
   const handleClickSiderMenu = (info: MenuInfo) => {
@@ -39,9 +40,9 @@ function MyMenu({ collapsed }: MenuProps) {
     return (
       routers?.map(x => (
         x.children ?
-          <SubMenu key={x.path} title={fPath + x.title} icon={collapsed && <MenuOutlined />}>
+          <SubMenu key={fPath + x.path} title={x.title} icon={collapsed && <MenuOutlined />}>
             {
-              getAllMenu(x.children, fPath)
+              getAllMenu(x.children, fPath + x.path)
             }
           </SubMenu>
           :
@@ -60,7 +61,7 @@ function MyMenu({ collapsed }: MenuProps) {
       <div className={styles.logo} />
       <Menu theme="dark" mode="inline" defaultSelectedKeys={["/auth/activity"]} onClick={handleClickSiderMenu}>
         {
-          getAllMenu(newRouters)
+          getAllMenu(newRouters, menuRouter?.path || '')
         }
       </Menu>
     </Sider>

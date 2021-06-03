@@ -1,7 +1,7 @@
 /*
  * @Author: 鲁田文
  * @Date: 2021-03-31 14:22:13
- * @LastEditTime: 2021-06-03 11:55:00
+ * @LastEditTime: 2021-06-03 17:53:15
  * @LastEditors: 鲁田文
  * @Description:
  */
@@ -34,25 +34,41 @@ const routes: RoutesOption[] = [
     path: "/manage",
     component: Layout,
     meta: {
-      permissions: [
-        ...permissions
-      ]
+      menu: true,
     },
     children: [
       {
         path: "/home",
         component: Home,
-        title: "活动",
+        title: "首页",
         meta: {
+          menu: true,
           permissions: [
             ...permissions,
           ]
         },
       },
       {
+        path: "/home1",
+        component: Auth1,
+        title: "首页1",
+        meta: {
+          menu: true,
+        },
+      },
+      {
+        path: "/home2",
+        component: Auth2,
+        title: "首页2",
+        meta: {
+          menu: true,
+        },
+      },
+      {
         path: "/auth",
         title: "活动主体",
         meta: {
+          menu: true,
           permissions: [
             ...permissions,
           ]
@@ -63,6 +79,7 @@ const routes: RoutesOption[] = [
             component: Auth,
             title: "活动",
             meta: {
+              menu: true,
               permissions: [
                 ...permissions,
               ]
@@ -73,6 +90,7 @@ const routes: RoutesOption[] = [
             component: Auth1,
             title: "活动1",
             meta: {
+              menu: true,
               permissions: [
                 ...permissions,
               ]
@@ -83,8 +101,9 @@ const routes: RoutesOption[] = [
             component: Auth2,
             title: "活动2",
             meta: {
+              menu: true,
               permissions: [
-                ...permissions,
+                'user1',
               ]
             },
           },

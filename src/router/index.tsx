@@ -7,9 +7,11 @@ import {
 } from "react-router-dom";
 import { Spin } from "antd";
 import routers from "@/router/routers";
+import usePermission from "@/hooks/usePermission";
 
 export interface Meta {
-  permissions?: string[];
+  menu?: boolean; // 是否在左侧菜单上展示
+  permissions?: string[]; // 权限组
 }
 
 export interface RoutesOption {
@@ -28,6 +30,11 @@ interface PrivateRouteProps {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 function AppRouter() {
+  // 过滤权限组路由
+  console.log(`Router`, routers);
+  const newRouters = usePermission({ routers }); // 过滤权限后路由
+  console.log(`newRouter`, newRouters);
+
   // 权限控制路由
   const PrivateRoute = (props: PrivateRouteProps) => {
     const { children, ...rest } = props;
@@ -53,28 +60,34 @@ function AppRouter() {
 
   // 递归路由
   const tileRouter = (routers: RoutesOption[] | undefined, fPath: string = ''): any => {
-    return routers?.map(x => {
-      const mergePath = fPath + x.path;
-      if(x.children && x.children.length > 0) {
-        return (
-          <Route
-            key={mergePath}
-            path={mergePath}
-            render={() => {
-              return <Suspense fallback={<Spin tip="加载中..." />}>{React.createElement(x.component || Switch, {}, tileRouter(x.children, mergePath))}</Suspense>;
-            }}
-          />
-        );
-      } else {
-        return (
-          <Route
-            key={mergePath}
-            path={mergePath}
-            component={x.component}
-          />
-        );
-      }
-    })
+    return (
+      <Suspense fallback={<Spin tip="加载中..." />}>
+        {
+          routers?.map(x => {
+            const mergePath = fPath + x.path;
+            if(x.children && x.children.length > 0) {
+              return (
+                <Route
+                  key={mergePath}
+                  path={mergePath}
+                  render={() => {
+                    return <Suspense fallback={<Spin tip="加载中..." />}>{React.createElement(x.component || Switch, {}, tileRouter(x.children, mergePath))}</Suspense>;
+                  }}
+                />
+              );
+            } else {
+              return (
+                <Route
+                  key={mergePath}
+                  path={mergePath}
+                  component={x.component}
+                />
+              );
+            }
+          })
+        }
+      </Suspense>
+    )
   }
 
   return (
@@ -84,7 +97,7 @@ function AppRouter() {
         <PrivateRoute>
           <Suspense fallback={<Spin tip="加载中..." />}>
             <Switch>
-              {tileRouter(routers)}
+              {tileRouter(newRouters)}
             </Switch>
           </Suspense>
         </PrivateRoute>
