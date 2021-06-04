@@ -1,12 +1,12 @@
 /*
  * @Author: 最刚
  * @Date: 2020-07-24 17:33:46
- * @LastEditTime: 2021-06-03 20:49:44
+ * @LastEditTime: 2021-06-04 18:10:11
  * @LastEditors: 鲁田文
  * @Description: api
  */
-
-const PREFIX = "/dev";
+import { BASE_URL } from "@/config/config";
+const PREFIX = BASE_URL;
 
 const getUrl = (url: string, prefix: string = PREFIX) => {
   return `${prefix}${url}`;
