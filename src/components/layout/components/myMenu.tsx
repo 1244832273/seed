@@ -1,7 +1,7 @@
 /*
  * @Author: 鲁田文
  * @Date: 2021-04-08 14:22:35
- * @LastEditTime: 2021-06-03 16:56:41
+ * @LastEditTime: 2021-07-02 11:37:26
  * @LastEditors: 鲁田文
  * @Description:
  */
@@ -20,7 +20,7 @@ const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 interface MenuProps {
-  collapsed: boolean;
+  collapsed: boolean; // 控制菜单展开关闭
 }
 
 function MyMenu({ collapsed }: MenuProps) {

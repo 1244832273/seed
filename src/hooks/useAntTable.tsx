@@ -1,11 +1,11 @@
 /*
  * @Author: 鲁田文
  * @Date: 2021-04-23 16:13:19
- * @LastEditTime: 2021-05-14 18:57:11
- * @LastEditors: 鲁田文
+ * @LastEditTime: 2021-06-16 16:04:42
+ * @LastEditors: Please set LastEditors
  * @Description: loading 分页table
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 export interface queryPage {
   current: number;
@@ -28,20 +28,30 @@ export interface useAntTableResult<T> {
   loading: boolean;
   dataSource: T;
   pagination: Pagination;
-  queryPagination: (pagination: any, filters: any, sorter: any, extra: any) => void;
+  queryPagination: (
+    pagination: any,
+    filters: any,
+    sorter: any,
+    extra: any
+  ) => void;
 }
 
 interface useAntTableProps {
   pageSize?: number;
+  showQuickJumper?: boolean;
   fetchPage: (params: queryPage) => Promise<queryResult>;
 }
-function useAntTable({ pageSize = 10, fetchPage }: useAntTableProps) {
+function useAntTable({
+  pageSize = 10,
+  showQuickJumper = false,
+  fetchPage,
+}: useAntTableProps) {
   const [dataSource, setDataSource] = useState<any>([]); // 返回table数据
   const [pagination, setPagination] = useState<Pagination>({
     current: 1,
     pageSize,
     total: 0,
-    showQuickJumper: false,
+    showQuickJumper,
   });
   const [refreshKey, setRefreshKey] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
@@ -56,12 +66,12 @@ function useAntTable({ pageSize = 10, fetchPage }: useAntTableProps) {
         return {
           ...pre,
           pageSize: pageSize,
-          current: typeof pageNo == 'number' ? pageNo : parseInt(pageNo),
+          current: typeof pageNo == "number" ? pageNo : parseInt(pageNo),
           total: total,
         };
       });
     } catch (error) {
-      console.log('error :>> ', error);
+      console.log("error :>> ", error);
     } finally {
       setLoading(false);
     }
@@ -79,7 +89,12 @@ function useAntTable({ pageSize = 10, fetchPage }: useAntTableProps) {
   };
 
   // 分页触发请求
-  const queryPagination = (pagination: any, filters: any, sorter: any, extra: any) => {
+  const queryPagination = (
+    pagination: any,
+    filters: any,
+    sorter: any,
+    extra: any
+  ) => {
     const params = {
       current: pagination.current,
       pageSize: pagination.pageSize,

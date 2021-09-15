@@ -1,7 +1,7 @@
 /*
  * @Author: 鲁田文
  * @Date: 2021-06-02 15:44:15
- * @LastEditTime: 2021-06-03 17:36:13
+ * @LastEditTime: 2021-07-02 11:52:09
  * @LastEditors: 鲁田文
  * @Description:
  */
@@ -22,8 +22,8 @@ function usePermission({ routers }: usePermissionProps) {
     return routers?.map(x => {
       const permissions = x?.meta?.permissions; // 当前路由权限组
       const haveAuth = permissions && permissions?.some(y => y === auth); // 权限组匹配
-      // 1.存在权限组且权限组匹配 放行
-      // 2.存在权限组且权限组匹配 放行 有children子路由时递归
+      // 1.存在权限组且权限组匹配时 放行
+      // 2.存在权限组且权限组匹配时 放行 有children子路由时递归
       // 3.不存在权限组时 直接放行不判断
       if(haveAuth && x.children) { // 存在权限组且权限组匹配 并存在children子路由时 递归子路由
         return {
@@ -49,6 +49,7 @@ function usePermission({ routers }: usePermissionProps) {
     setRouterAuth(newRouter);
     return () => { };
   }, []);
+  
   return routerAuth;
 }
 
