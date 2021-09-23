@@ -27,6 +27,7 @@
     "bfj": "^7.0.2",
     "camelcase": "^6.1.0",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
+    "cesium": "^1.85.0",
     "css-loader": "0.28.7",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
@@ -64,6 +65,7 @@
     "react-dom": "^17.0.2",
     "react-refresh": "^0.8.3",
     "react-router-dom": "^5.2.0",
+    "resium": "^1.14.2",
     "resolve": "1.18.1",
     "resolve-url-loader": "^3.1.2",
     "semver": "7.3.2",
@@ -161,6 +163,7 @@
     ]
   },
   "devDependencies": {
+    "@open-wc/webpack-import-meta-loader": "^0.4.7",
     "stylus": "^0.54.8"
   }
 }
