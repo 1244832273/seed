@@ -25,6 +25,9 @@ const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpack
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
+const HtmlTagsPlugin = require('html-webpack-tags-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 const postcssNormalize = require('postcss-normalize');
 
 const appPackageJson = require(paths.appPackageJson);
@@ -193,6 +196,9 @@ module.exports = function (webpackEnv) {
           ]
         : paths.appIndexJs,
     output: {
+      externals: {
+        cesium: 'Cesium',
+      },
       // The build folder.
       path: isEnvProduction ? paths.appBuild : undefined,
       // Add /* filename */ comments to generated require()s in the output.
@@ -555,6 +561,14 @@ module.exports = function (webpackEnv) {
       ],
     },
     plugins: [
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: 'node_modules/cesium/Build/Cesium',
+            to: 'cesium',
+          },
+        ],
+      }),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(
@@ -581,6 +595,13 @@ module.exports = function (webpackEnv) {
             : undefined,
         ),
       ),
+      new HtmlTagsPlugin({
+        append: false,
+        tags: ['cesium/Widgets/widgets.css', 'cesium/Cesium.js'],
+      }),
+      new webpack.DefinePlugin({
+        CESIUM_BASE_URL: JSON.stringify('/cesium'),
+      }),
       // Inlines the webpack runtime script. This script is too small to warrant
       // a network request.
       // https://github.com/facebook/create-react-app/issues/5358
